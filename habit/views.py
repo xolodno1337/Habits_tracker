@@ -17,15 +17,15 @@ class HabitViewSet(ModelViewSet):
         habit.save()
 
     def get_permissions(self):
-        if self.action == 'create':
+        if self.action == "create":
             self.permission_classes = (IsAuthenticated,)
-        elif self.action == 'list':
+        elif self.action == "list":
             self.permission_classes = (IsAuthenticated,)
-        elif self.action == 'update':
+        elif self.action == "update":
             self.permission_classes = (IsOwner, IsAuthenticated)
-        elif self.action == 'retrieve':
+        elif self.action == "retrieve":
             self.permission_classes = (IsAuthenticated,)
-        elif self.action == 'destroy':
+        elif self.action == "destroy":
             self.permission_classes = (IsOwner, IsAuthenticated)
 
         return super().get_permissions()
