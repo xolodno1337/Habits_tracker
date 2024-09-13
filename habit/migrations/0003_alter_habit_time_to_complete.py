@@ -7,13 +7,19 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('habit', '0002_initial'),
+        ("habit", "0002_initial"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='habit',
-            name='time_to_complete',
-            field=models.DurationField(blank=True, default=datetime.timedelta(seconds=120), help_text='Время, которое предположительно потратите', null=True, verbose_name='Время на выполнение'),
+            model_name="habit",
+            name="time_to_complete",
+            field=models.DurationField(
+                blank=True,
+                default=datetime.timedelta(seconds=120),
+                help_text="Время, которое предположительно потратите",
+                null=True,
+                verbose_name="Время на выполнение",
+            ),
         ),
     ]

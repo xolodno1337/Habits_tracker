@@ -3,7 +3,7 @@ from rest_framework.exceptions import ValidationError
 
 
 class ChoiceRewardValidator:
-    """ Исключает одновременный выбор связанной привычки и указания вознаграждения."""
+    """Исключает одновременный выбор связанной привычки и указания вознаграждения."""
 
     def __init__(self, related_habit, reward):
         self.related_habit = related_habit
@@ -12,23 +12,29 @@ class ChoiceRewardValidator:
     def __call__(self, habit):
         if habit.get(self.related_habit) and habit.get(self.reward):
             raise ValidationError(
-                f'''Вы не можете одновременно выбрать {self.related_habit} и {self.reward} ,выберите что-то одно.''')
+                f"""Вы не можете одновременно выбрать {self.related_habit} и {self.reward} ,выберите что-то одно."""
+            )
 
 
 class TimeValidator:
-    """ Проверка, время выполнения должно быть не больше 120 секунд. """
+    """Проверка, время выполнения должно быть не больше 120 секунд."""
 
     def __init__(self, time_to_complete):
         self.time_to_complete = time_to_complete
 
     def __call__(self, habit):
         time_to_complete_end = timedelta(minutes=2)
-        if habit.get(self.time_to_complete) and habit.get(self.time_to_complete) > time_to_complete_end:
-            raise ValidationError(f'Время выполнения не может быть более {time_to_complete_end} минут.')
+        if (
+            habit.get(self.time_to_complete)
+            and habit.get(self.time_to_complete) > time_to_complete_end
+        ):
+            raise ValidationError(
+                f"Время выполнения не может быть более {time_to_complete_end} минут."
+            )
 
 
 class RelatedHabitValidator:
-    """ Проверка, в связанные привычки могут попадать только привычки с признаком приятной привычки."""
+    """Проверка, в связанные привычки могут попадать только привычки с признаком приятной привычки."""
 
     def __init__(self, pleasant_habit, related_habit):
         self.pleasant_habit = pleasant_habit
@@ -36,22 +42,22 @@ class RelatedHabitValidator:
 
     def __call__(self, habit):
         if habit.get(self.related_habit) and not habit.get(self.pleasant_habit):
-            raise ValidationError('Привычка не является приятной.')
+            raise ValidationError("Привычка не является приятной.")
 
 
 class PeriodicityValidator:
-    """ Проверяет, является ли периодичность привычки корректной. """
+    """Проверяет, является ли периодичность привычки корректной."""
 
     def __init__(self, periodicity):
         self.periodicity = periodicity
 
     def __call__(self, habit):
         if habit.get(self.periodicity) not in range(1, 8):
-            raise ValidationError('Нельзя выполнять привычку реже, чем 1 раз в 7 дней.')
+            raise ValidationError("Нельзя выполнять привычку реже, чем 1 раз в 7 дней.")
 
 
 class NoConnectionValidator:
-    """ Проверка, у приятной привычки не может быть вознаграждения или связанной привычки. """
+    """Проверка, у приятной привычки не может быть вознаграждения или связанной привычки."""
 
     def __init__(self, pleasant_habit, related_habit, reward):
         self.pleasant_habit = pleasant_habit
@@ -64,4 +70,6 @@ class NoConnectionValidator:
             and habit.get(self.related_habit)
             or habit.get(self.reward)
         ):
-            raise ValidationError('У приятной привычки не может быть вознаграждения или связанной привычки.')
+            raise ValidationError(
+                "У приятной привычки не может быть вознаграждения или связанной привычки."
+            )
