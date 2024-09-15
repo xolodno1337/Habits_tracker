@@ -1,6 +1,3 @@
-from rest_framework import status
-from rest_framework import response
-
 from config import settings
 import requests
 
