@@ -29,3 +29,7 @@ class HabitViewSet(ModelViewSet):
             self.permission_classes = (IsOwner, IsAuthenticated)
 
         return super().get_permissions()
+
+    def get_queryset(self):
+        """ Список опубликованных привычек."""
+        return Habit.objects.filter(is_published=True)
