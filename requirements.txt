@@ -13,3 +13,4 @@ redis==5.0.8
 django-celery-beat==2.7.0
 requests==2.32.3
 eventlet==0.37.0
+drf-yasg==1.21.7
