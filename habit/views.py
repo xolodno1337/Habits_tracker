@@ -17,19 +17,16 @@ class HabitViewSet(ModelViewSet):
         habit.save()
 
     def get_permissions(self):
-        if self.action == "create":
+        if self.action in ['create', 'list', 'retrieve']:
             self.permission_classes = (IsAuthenticated,)
-        elif self.action == "list":
-            self.permission_classes = (IsAuthenticated,)
-        elif self.action == "update":
+        elif self.action in ['update', 'destroy']:
             self.permission_classes = (IsOwner, IsAuthenticated)
-        elif self.action == "retrieve":
-            self.permission_classes = (IsAuthenticated,)
-        elif self.action == "destroy":
-            self.permission_classes = (IsOwner, IsAuthenticated)
-
         return super().get_permissions()
 
     def get_queryset(self):
-        """ Список опубликованных привычек."""
-        return Habit.objects.filter(is_published=True)
+        """ Возвращает список привычек для текущего пользователя и все опубликованные привычки. """
+
+        user = self.request.user
+        user_habits = Habit.objects.filter(user=user)
+        published_habits = Habit.objects.filter(is_published=True)
+        return user_habits | published_habits
