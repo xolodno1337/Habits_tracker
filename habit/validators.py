@@ -41,8 +41,9 @@ class RelatedHabitValidator:
         self.related_habit = related_habit
 
     def __call__(self, habit):
-        if habit.get(self.related_habit) and not habit.get(self.pleasant_habit):
-            raise ValidationError("Привычка не является приятной.")
+        if habit.get(self.related_habit):
+            if not habit.get(self.pleasant_habit):
+                raise ValidationError("Связанная привычка не является приятной.")
 
 
 class PeriodicityValidator:
@@ -65,11 +66,8 @@ class NoConnectionValidator:
         self.reward = reward
 
     def __call__(self, habit):
-        if (
-            habit.get(self.pleasant_habit)
-            and habit.get(self.related_habit)
-            or habit.get(self.reward)
-        ):
-            raise ValidationError(
-                "У приятной привычки не может быть вознаграждения или связанной привычки."
-            )
+        if habit.get(self.pleasant_habit):
+            if habit.get(self.reward) or habit.get(self.related_habit):
+                raise ValidationError(
+                    "У приятной привычки не может быть вознаграждения или связанной привычки."
+                )
