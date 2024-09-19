@@ -36,14 +36,10 @@ class TimeValidator:
 class RelatedHabitValidator:
     """Проверка, в связанные привычки могут попадать только привычки с признаком приятной привычки."""
 
-    def __init__(self, pleasant_habit, related_habit):
-        self.pleasant_habit = pleasant_habit
-        self.related_habit = related_habit
-
     def __call__(self, habit):
-        if habit.get(self.related_habit):
-            if not habit.get(self.pleasant_habit):
-                raise ValidationError("Связанная привычка не является приятной.")
+        related_habit = habit.get("related_habit")
+        if related_habit and not related_habit.pleasant_habit:
+            raise ValidationError("Связанная привычка не является приятной.")
 
 
 class PeriodicityValidator:

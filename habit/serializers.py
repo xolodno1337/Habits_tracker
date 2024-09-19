@@ -16,7 +16,7 @@ class HabitSerializer(ModelSerializer):
         validators = [
             ChoiceRewardValidator("related_habit", "reward"),
             TimeValidator("time_to_complete"),
-            RelatedHabitValidator("pleasant_habit", "related_habit"),
+            RelatedHabitValidator(),
             PeriodicityValidator("periodicity"),
             NoConnectionValidator("pleasant_habit", "related_habit", "reward"),
         ]
